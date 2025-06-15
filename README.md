@@ -1,4 +1,4 @@
-# TWAMP
+# Two-Way Active Measurement Protocol (TWAMP)
 
 A minimal [TWAMP Light](https://datatracker.ietf.org/doc/html/rfc5357) implementation in Go for active round-trip time (RTT) measurement over UDP. It follows the TWAMP-Test packet format from RFC 5357 §4.1.2 and uses NTP-style 64-bit timestamps.
 
