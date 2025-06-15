@@ -9,7 +9,7 @@ import (
 
 func FuzzUnmarshalTestPacket(f *testing.F) {
 	f.Add([]byte{0x00})
-	f.Fuzz(func(t *testing.T, data []byte) {
+	f.Fuzz(func(_ *testing.T, data []byte) {
 		_, _ = twamp.UnmarshalTestPacket(data)
 	})
 }
@@ -35,7 +35,7 @@ func FuzzRoundTripPacket(f *testing.F) {
 
 func FuzzNTPConversion(f *testing.F) {
 	f.Add(int64(time.Now().Unix()))
-	f.Fuzz(func(t *testing.T, unixSec int64) {
+	f.Fuzz(func(_ *testing.T, unixSec int64) {
 		tm := time.Unix(unixSec, 0).UTC()
 		sec, frac := twamp.ToNTP(tm)
 		_ = twamp.FromNTP(sec, frac)

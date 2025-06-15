@@ -1,0 +1,23 @@
+version: "2"
+linters:
+  enable:
+    - revive
+    - gocritic
+    - gocyclo
+    - goconst
+    # - gocognit
+    - gocritic
+    - gocyclo
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  exclusions:
+    generated: lax
