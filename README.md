@@ -2,15 +2,17 @@
 
 A minimal [TWAMP Light](https://datatracker.ietf.org/doc/html/rfc5357) implementation in Go for active round-trip time (RTT) measurement over UDP. It follows the TWAMP-Test packet format from RFC 5357 §4.1.2 and uses NTP-style 64-bit timestamps.
 
+[![Checks](https://github.com/snormore/twamp/actions/workflows/checks.yaml/badge.svg)](https://github.com/snormore/twamp/actions/workflows/checks.yaml)
+
 ## Features
 
-* Sends and receives TWAMP-Test packets over UDP
-* NTP-based timestamps for accurate RTT
-* Summary statistics including packet loss, min/max/avg RTT, and jitter
-* Simple `Sender` and `Reflector` interfaces
-* Optional Prometheus metrics instrumentation
-* Configurable padding for packet size control
-* Unit tests and fuzz testing
+- Sends and receives TWAMP-Test packets over UDP
+- NTP-based timestamps for accurate RTT
+- Summary statistics including packet loss, min/max/avg RTT, and jitter
+- Simple `Sender` and `Reflector` interfaces
+- Optional Prometheus metrics instrumentation
+- Configurable padding for packet size control
+- Unit tests and fuzz testing
 
 ## Example
 
@@ -87,6 +89,6 @@ RTT = 212.400µs (seq 4)
 
 This library implements the essentials of TWAMP Light. Some features are not yet included:
 
-* DSCP / TOS field configuration
-* Don't Fragment (DF) bit
-* CLI tools (`twamp-client`, `twamp-reflector`)
+- DSCP / TOS field configuration
+- Don't Fragment (DF) bit
+- CLI tools (`twamp-client`, `twamp-reflector`)
