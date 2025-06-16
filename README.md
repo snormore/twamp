@@ -1,8 +1,6 @@
-# Two-Way Active Measurement Protocol (TWAMP)
+# TWAMP
 
 A minimal [TWAMP Light](https://datatracker.ietf.org/doc/html/rfc5357) implementation in Go for active round-trip time (RTT) measurement over UDP. It follows the TWAMP-Test packet format from RFC 5357 §4.1.2 and uses NTP-style 64-bit timestamps.
-
-[![Checks](https://github.com/snormore/twamp/actions/workflows/checks.yaml/badge.svg)](https://github.com/snormore/twamp/actions/workflows/checks.yaml)
 
 ## Features
 
@@ -20,7 +18,7 @@ A minimal [TWAMP Light](https://datatracker.ietf.org/doc/html/rfc5357) implement
 
 ```go
 go func() {
-    listener, _ := twamp.NewListener(":9000", &twamp.lightReflector{}, 512)
+    listener, _ := twamp.NewListener(":9000", 512, nil, nil)
     _ = listener.Run()
 }()
 ```
@@ -28,8 +26,8 @@ go func() {
 ### Sender (Client)
 
 ```go
-sender, _ := twamp.NewSender(":0", "127.0.0.1:9000", time.Second, nil)
-res, _ := sender.SendProbeVerbose(32)
+sender, _ := twamp.NewSender(":0", "127.0.0.1:9000", time.Second, nil, nil)
+res, _ := sender.SendProbe()
 fmt.Printf("RTT = %v (seq %d)\n", res.RTT, res.Seq)
 ```
 
@@ -46,16 +44,18 @@ fmt.Printf("RTT = %v (seq %d)\n", res.RTT, res.Seq)
 ## Interfaces
 
 ```go
-type TWAMPSender interface {
-    SendProbe() (rtt time.Duration, seq uint32, err error)
-    SendProbeVerbose(paddingLen int) (*ProbeResult, error)
+type Sender interface {
+	SendProbe() (*ProbeResult, error)
+	SendProbeWithPadding(paddingLen int) (*ProbeResult, error)
+	Summary() *ProbeSummary
+	Close() error
 }
 
-type TWAMPReflector interface {
+type Reflector interface {
     HandleProbe(msg []byte, from net.Addr) ([]byte, error)
 }
 
-type TWAMPListener interface {
+type Listener interface {
     Run() error
     Close() error
     LocalAddr() net.Addr

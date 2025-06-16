@@ -1,10 +1,12 @@
 package twamp
 
 import (
+	"sync"
 	"time"
 )
 
 type ProbeSummary struct {
+	mu       sync.Mutex
 	Count    int
 	Lost     int
 	MinRTT   time.Duration
@@ -15,6 +17,9 @@ type ProbeSummary struct {
 }
 
 func (s *ProbeSummary) Update(rtt time.Duration, ok bool) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
 	if !ok {
 		s.Lost++
 		return
@@ -38,6 +43,9 @@ func (s *ProbeSummary) Update(rtt time.Duration, ok bool) {
 }
 
 func (s *ProbeSummary) AvgRTT() time.Duration {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
 	if s.Count == 0 {
 		return 0
 	}
